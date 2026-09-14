@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#06111d">
+  <meta name="description" content="ChemAI predicts reaction products, pathways, mechanisms, conditions, and safety considerations.">
+  <title>ChemAI | AI Reaction Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-atom" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M19.5 12c0 4.14-3.36 7.5-7.5 7.5S4.5 16.14 4.5 12 7.86 4.5 12 4.5s7.5 3.36 7.5 7.5Z" transform="rotate(60 12 12)"/><path d="M19.5 12c0 4.14-3.36 7.5-7.5 7.5S4.5 16.14 4.5 12 7.86 4.5 12 4.5s7.5 3.36 7.5 7.5Z" transform="rotate(-60 12 12)"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></symbol>
+    <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5.5 9.2A1.8 1.8 0 0 0 6 21h12a1.8 1.8 0 0 0 1.5-2.8L14 9V3"/><path d="M7.5 15h9"/></symbol>
+    <symbol id="i-library" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13Z"/><path d="M8 7h8M8 11h6"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4V3Z"/></symbol>
+    <symbol id="i-learn" viewBox="0 0 24 24"><path d="m2 10 10-5 10 5-10 5L2 10Z"/><path d="M6 12.5V17c3 2.5 9 2.5 12 0v-4.5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M14 7l5 5-5 5"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h12l2 2v16H5V3Z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M7 7l1 14h8l1-14"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 5 3 8.5 7 10 4-1.5 7-5 7-10V6l-7-3Z"/><path d="M12 8v5M12 16h.01"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  </svg>
+
+  <div class="science-background" aria-hidden="true">
+    <span class="formula f1">H₂O</span><span class="formula f2">ΔG</span><span class="formula f3">C₆H₆</span>
+    <span class="formula f4">e⁻</span><span class="formula f5">NH₃</span><span class="formula f6">E°</span>
+    <span class="formula f7">H⁺</span><span class="formula f8">CH₄</span>
+  </div>
+
+  <button class="mobile-menu" id="mobile-menu" aria-label="Open navigation" aria-expanded="false">
+    <svg><use href="#i-menu"/></svg>
+  </button>
+  <div class="sidebar-scrim" id="sidebar-scrim"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><svg><use href="#i-atom"/></svg></div>
+      <div><strong>Chem<span>AI</span></strong><small>REACTION INTELLIGENCE</small></div>
+    </div>
+    <nav aria-label="Primary navigation">
+      <p class="nav-label">WORKSPACE</p>
+      <button class="nav-item active" data-page="overview"><svg><use href="#i-grid"/></svg><span>Overview</span></button>
+      <button class="nav-item" data-page="predict"><svg><use href="#i-flask"/></svg><span>Predict Reaction</span></button>
+      <button class="nav-item" data-page="library"><svg><use href="#i-library"/></svg><span>Reaction Library</span></button>
+      <button class="nav-item" data-page="saved"><svg><use href="#i-bookmark"/></svg><span>Saved Results</span><b id="saved-count">0</b></button>
+      <p class="nav-label nav-label-spaced">EXPLORE</p>
+      <button class="nav-item" data-page="learning"><svg><use href="#i-learn"/></svg><span>Learning Hub</span></button>
+      <button class="nav-item" data-page="about"><svg><use href="#i-info"/></svg><span>About ChemAI</span></button>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="system-status"><span class="status-dot"></span><div><strong>AI SYSTEM</strong><small>Production API connected</small></div></div>
+      <p>CHEMAI v2.1 <span>EDUCATIONAL AI</span></p>
+    </div>
+  </aside>
+
+  <main class="main-shell">
+    <header class="topbar">
+      <div class="breadcrumb"><span>CHEMISTRY LAB</span><svg><use href="#i-chevron"/></svg><strong id="breadcrumb-current">OVERVIEW</strong></div>
+      <div class="top-status"><span class="status-dot"></span><span>MODEL READY</span><span class="lab-avatar">CS</span></div>
+    </header>
+
+    <section class="app-page active" id="overview-page" data-title="OVERVIEW">
+      <div class="hero-section">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-dot"></span>AI-POWERED CHEMISTRY PLATFORM</p>
+          <h1>AI-Powered<br><span>Reaction Intelligence</span></h1>
+          <p class="hero-lede">Explore plausible products, pathways, mechanisms, reaction conditions, and safety considerations from a single chemical query.</p>
+          <div class="hero-actions">
+            <button class="button button-primary" data-go="predict">Predict Reaction <svg><use href="#i-arrow"/></svg></button>
+            <button class="button button-secondary" data-go="library">Explore Library</button>
+          </div>
+          <div class="hero-metrics">
+            <div><strong>Multi-path</strong><span>Reaction reasoning</span></div>
+            <div><strong>Context-aware</strong><span>Conditions analysis</span></div>
+            <div><strong>Safety-first</strong><span>Responsible guidance</span></div>
+          </div>
+        </div>
+        <div class="molecule-stage" id="molecule-stage" aria-label="Animated molecular visualization">
+          <div class="stage-grid"></div>
+          <svg class="molecular-network" viewBox="0 0 600 520" role="img" aria-label="Stylized ethyl acetate molecular network">
+            <g class="bonds">
+              <path d="M92 280 L185 220 L280 280 L370 220 L470 275"/><path d="M280 280 L280 150"/><path d="M294 280 L294 154"/><path d="M185 220 L130 120"/><path d="M470 275 L530 190"/>
+            </g>
+            <g class="atom-node carbon"><circle cx="92" cy="280" r="25"/><text x="92" y="286">C</text></g>
+            <g class="atom-node carbon"><circle cx="185" cy="220" r="30"/><text x="185" y="227">C</text></g>
+            <g class="atom-node carbon main"><circle cx="280" cy="280" r="34"/><text x="280" y="288">C</text></g>
+            <g class="atom-node oxygen"><circle cx="287" cy="150" r="31"/><text x="287" y="158">O</text></g>
+            <g class="atom-node oxygen"><circle cx="370" cy="220" r="31"/><text x="370" y="228">O</text></g>
+            <g class="atom-node carbon"><circle cx="470" cy="275" r="29"/><text x="470" y="282">C</text></g>
+            <g class="atom-node hydrogen"><circle cx="130" cy="120" r="19"/><text x="130" y="126">H₃</text></g>
+            <g class="atom-node hydrogen"><circle cx="530" cy="190" r="19"/><text x="530" y="196">H₃</text></g>
+            <circle class="traveler t1" cx="0" cy="0" r="5"><animateMotion dur="5s" repeatCount="indefinite" path="M92 280 L185 220 L280 280 L370 220 L470 275"/></circle>
+            <circle class="traveler t2" cx="0" cy="0" r="4"><animateMotion dur="4s" repeatCount="indefinite" path="M280 280 L287 150"/></circle>
+          </svg>
+          <div class="orbit orbit-a"><i></i></div><div class="orbit orbit-b"><i></i></div>
+          <div class="stage-label label-one"><small>MOLECULAR FAMILY</small><strong>ESTER</strong></div>
+          <div class="stage-label label-two"><small>STRUCTURE</small><strong>CH₃COOCH₂CH₃</strong></div>
+          <p class="stage-caption"><span></span>STRUCTURAL ANALYSIS ONLINE</p>
+        </div>
+      </div>
+      <div class="overview-strip">
+        <article><span>01</span><svg><use href="#i-flask"/></svg><div><strong>Define reactants</strong><p>Enter names, formulas, or mixtures.</p></div></article>
+        <article><span>02</span><svg><use href="#i-atom"/></svg><div><strong>Analyze pathways</strong><p>Review plausible reaction routes.</p></div></article>
+        <article><span>03</span><svg><use href="#i-shield"/></svg><div><strong>Verify responsibly</strong><p>Use reliable sources and safe practice.</p></div></article>
+      </div>
+    </section>
+
+    <section class="app-page" id="predict-page" data-title="PREDICT REACTION">
+      <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span>REACTION WORKSPACE</p><h2>Predict a reaction</h2><p>Describe the starting materials and optional experimental context.</p></div><div class="heading-mark"><svg><use href="#i-flask"/></svg></div></div>
+      <div class="reaction-engine" aria-hidden="true">
+        <div class="engine-node"><span>01</span><strong>REACTANTS</strong><small>Starting materials</small></div>
+        <div class="engine-flow"><i></i><b>+</b></div>
+        <div class="engine-core"><div class="core-orbit"></div><svg><use href="#i-atom"/></svg><strong>CHEMAI ENGINE</strong><small>Pathway reasoning</small></div>
+        <div class="engine-flow"><i></i><b>→</b></div>
+        <div class="engine-node"><span>03</span><strong>PRODUCTS</strong><small>Predicted outcomes</small></div>
+      </div>
+      <form class="prediction-panel" id="prediction-form">
+        <div class="panel-heading"><div><span class="section-index">01</span><div><h3>Reaction input</h3><p>Use chemical names, formulas, or both.</p></div></div><span class="ready-badge" id="input-status">READY</span></div>
+        <div class="field-shell">
+          <div class="field-label"><label for="reactants-input">REACTANTS</label><span id="char-count">0 / 500</span></div>
+          <textarea id="reactants-input" maxlength="500" required placeholder="e.g. CH₃COOH + C₂H₅OH" spellcheck="false"></textarea>
+          <div class="field-footer"><span>Separate multiple reactants with a plus sign.</span><button type="button" class="text-button" id="clear-input"><svg><use href="#i-x"/></svg>Clear</button></div>
+        </div>
+        <div class="field-shell condition-shell">
+          <div class="field-label"><label for="conditions-input">REACTION CONDITIONS <em>OPTIONAL</em></label><span id="condition-count">0 / 300</span></div>
+          <input id="conditions-input" maxlength="300" placeholder="e.g. H₂SO₄ catalyst, reflux, 78 °C">
+        </div>
+        <div class="examples"><span>QUICK EXAMPLES</span><button type="button" data-example="CH₃COOH + C₂H₅OH" data-conditions="H₂SO₄ catalyst, reflux">Esterification</button><button type="button" data-example="HCl + NaOH" data-conditions="Aqueous, room temperature">Neutralization</button><button type="button" data-example="CH₄ + Cl₂" data-conditions="UV light">Substitution</button><button type="button" data-example="CaCO₃" data-conditions="Strong heating">Decomposition</button></div>
+        <button class="button button-primary predict-button" id="predict-button" type="submit"><svg><use href="#i-atom"/></svg><span>ANALYZE REACTION</span><svg><use href="#i-arrow"/></svg></button>
+      </form>
+
+      <section class="loading-panel" id="loading-state" hidden aria-live="polite">
+        <div class="loading-visual"><div class="loading-orbit lo-one"></div><div class="loading-orbit lo-two"></div><svg><use href="#i-atom"/></svg><span class="particle p-one"></span><span class="particle p-two"></span><span class="particle p-three"></span></div>
+        <p class="eyebrow">CHEMAI REACTION ENGINE</p><h3 id="loading-title">Analyzing molecular structure...</h3><p id="loading-detail">The hosted model may need a moment to wake up.</p><div class="progress-track"><span></span></div>
+      </section>
+
+      <section class="error-panel" id="error-panel" hidden role="alert">
+        <div class="error-icon">!</div><div><p class="eyebrow">ANALYSIS INTERRUPTED</p><h3 id="error-title">Prediction unavailable</h3><p id="error-message"></p><button class="button button-secondary" id="retry-button" type="button">Try again</button></div>
+      </section>
+
+      <section class="results-area" id="results-area" hidden aria-live="polite">
+        <div class="results-header"><div><p class="eyebrow"><span class="eyebrow-dot"></span>ANALYSIS COMPLETE</p><h2>Reaction intelligence</h2></div><div class="result-actions"><button id="copy-analysis" class="icon-action"><svg><use href="#i-copy"/></svg><span>Copy analysis</span></button><button id="save-result" class="icon-action"><svg><use href="#i-save"/></svg><span>Save result</span></button><button id="new-analysis" class="button button-primary small"><span>New analysis</span></button></div></div>
+        <div class="equation-card"><div class="equation-top"><span id="res-type">REACTION</span><button id="copy-equation" class="text-button"><svg><use href="#i-copy"/></svg>Copy equation</button></div><div id="res-equation" class="equation">—</div><p id="res-summary" class="equation-summary"></p></div>
+        <div id="result-sections" class="result-sections"></div>
+        <div class="safety-notice permanent"><svg><use href="#i-shield"/></svg><div><strong>Laboratory safety notice</strong><p>AI predictions can be incorrect. Verify chemistry information using reliable references, qualified supervision, and proper laboratory procedures before practical use.</p></div></div>
+      </section>
+    </section>
+
+    <section class="app-page" id="library-page" data-title="REACTION LIBRARY">
+      <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span>REFERENCE COLLECTION</p><h2>Reaction library</h2><p>Choose a foundational transformation to bring its example into the predictor.</p></div><div class="heading-mark"><svg><use href="#i-library"/></svg></div></div>
+      <div class="library-grid" id="library-grid"></div>
+    </section>
+
+    <section class="app-page" id="saved-page" data-title="SAVED RESULTS">
+      <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span>LOCAL NOTEBOOK</p><h2>Saved results</h2><p>Your predictions stay in this browser and can be reopened or deleted.</p></div><div class="heading-mark"><svg><use href="#i-bookmark"/></svg></div></div>
+      <div class="saved-grid" id="saved-grid"></div>
+    </section>
+
+    <section class="app-page" id="learning-page" data-title="LEARNING HUB">
+      <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-dot"></span>CHEMISTRY FOUNDATIONS</p><h2>Learning hub</h2><p>A visual map of the concepts used to reason about chemical change.</p></div><div class="heading-mark"><svg><use href="#i-learn"/></svg></div></div>
+      <div class="learning-grid" id="learning-grid"></div>
+    </section>
+
+    <section class="app-page" id="about-page" data-title="ABOUT CHEMAI">
+      <div class="about-hero"><div><p class="eyebrow"><span class="eyebrow-dot"></span>ABOUT THE PLATFORM</p><h2>Where chemical reasoning meets responsible AI.</h2><p>ChemAI helps learners explore plausible reaction outcomes and organize complex model output into understandable scientific context.</p></div><div class="about-atom"><div></div><div></div><div></div><span>AI</span></div></div>
+      <div class="about-grid"><article><span>01</span><h3>Mission</h3><p>Make reaction reasoning easier to explore without presenting model output as experimental fact.</p></article><article><span>02</span><h3>How prediction works</h3><p>Reactants and optional conditions are sent to the ChemAI service, which returns structured pathways, mechanisms, data, and cautions.</p></article><article><span>03</span><h3>Technology</h3><p>A lightweight browser interface communicates only with the hosted ChemAI backend. No credentials are stored in the frontend.</p></article><article><span>04</span><h3>Responsible AI</h3><p>Confidence is an estimate. Predictions require independent verification and must never replace laboratory safety protocols.</p></article></div>
+      <div class="safety-notice"><svg><use href="#i-shield"/></svg><div><strong>Educational use</strong><p>ChemAI is an educational decision-support tool, not a substitute for a trained chemist or validated experimental procedure.</p></div></div>
+    </section>
+
+    <footer><div><strong>ChemAI</strong><span>AI REACTION INTELLIGENCE</span></div><span>EDUCATIONAL PROJECT · 2026</span></footer>
+  </main>
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script src="script.js"></script>
+</body>
+</html>
