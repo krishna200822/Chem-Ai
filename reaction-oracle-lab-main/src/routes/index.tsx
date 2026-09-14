@@ -168,7 +168,21 @@ function ChemAI() {
         }),
       });
 
-      const data = await response.json();
+const responseText = await response.text();
+
+console.log("STATUS:", response.status);
+console.log("RESPONSE:", responseText);
+
+let data;
+
+try {
+  data = JSON.parse(responseText);
+} catch {
+  throw new Error(
+    `Backend returned HTML/non-JSON (${response.status}): ${responseText.slice(0, 300)}`
+  );
+}
+
 
       if (!response.ok) {
         throw new Error(
