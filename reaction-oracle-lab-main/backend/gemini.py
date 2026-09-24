@@ -13,8 +13,11 @@ API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
 if not API_KEY:
     raise ValueError("GEMINI_API_KEY is not configured on the backend.")
 
-# Use the current model
-MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip()
+# Gemini model
+# Can be overridden from .env with GEMINI_MODEL
+MODEL_NAME = "gemini-3.6-flash"
+
+print("🔥 USING GEMINI MODEL:", MODEL_NAME)
 
 client = genai.Client(api_key=API_KEY)
 
@@ -73,7 +76,19 @@ Rules:
         raise ValueError("Gemini returned an empty response.")
 
     except Exception as exc:
-        # One retry for temporary API failures
+        error_message = str(exc)
+
+        # Handle Gemini quota/rate-limit errors.
+        # Do NOT immediately retry a 429 because the API may explicitly
+        # tell us to wait several seconds/minutes.
+        if "429" in error_message or "RESOURCE_EXHAUSTED" in error_message:
+            raise ValueError(
+                f"Gemini quota/rate limit exceeded for model "
+                f"'{MODEL_NAME}'. Please wait for the quota to reset "
+                f"or use a project/model with available quota."
+            ) from exc
+
+        # Retry once for other temporary API failures.
         time.sleep(1)
 
         try:
